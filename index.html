@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Marionette Contact Manager</title>
+		<link href="./assets/css/bootstrap.css" rel="stylesheet">
+		<link href="./assets/css/application.css" rel="stylesheet">
+		<link href="./assets/css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+	</head>
+	<body>
+
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<span class="brand">Contact manager</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="main-region" class="container">
+			<p>Here is static content in the web page. It'll get replaced with our app.</p>
+		</div>
+
+		<!-- JS libraries -->
+		<script src="./assets/js/vendor/jquery.js"></script>
+		<script src="./assets/js/vendor/json2.js"></script>
+		<script src="./assets/js/vendor/underscore.js"></script>
+		<script src="./assets/js/vendor/backbone.js"></script>
+		<script src="./assets/js/vendor/backbone.marionette.js"></script>
+
+		<script src="./assets/js/app.js"></script>
+		<script src="./assets/js/entities/contact.js"></script>
+
+    <!-- template for the ItemView -->
+		<script type="text/template" id="contact-list-item">
+			<%= firstName %> <%= lastName %> 
+		</script>
+
+		<script type="text/javascript">
+
+			// item view
+			ContactManager.ContactItemView = Marionette.ItemView.extend({
+				tagName: "li",
+				template: "#contact-list-item"
+			});
+
+			// collection view
+			ContactManager.ContactsView = Marionette.CollectionView.extend({
+				tagName: "ul",
+				itemView: ContactManager.ContactItemView
+			});
+
+			ContactManager.on("initialize:after", function() {
+				// create collection dynamically
+				var contacts = new ContactManager.Entities.ContactCollection([
+					{
+						firstName: "Bob",
+						lastName: "Brigham",
+						phoneNumber: "555-0163"
+					},
+					{
+						firstName: "Alice",
+						lastName: "Arten",
+						phoneNumber: "555-0184"
+					},
+					{
+						firstName: "Charlie",
+						lastName: "Campbell",
+						phoneNumber: "555-0129"
+					},
+					{
+						firstName: "Alice",
+						lastName: "Blue",
+						phoneNumber: "555-0184"
+					},
+					{
+						firstName: "Alice",
+						lastName: "Red",
+						phoneNumber: "555-0184"
+					}
+					]);
+
+				var contactsListView = new ContactManager.ContactsView({
+					collection: contacts
+				});
+
+				ContactManager.mainRegion.show(contactsListView);
+				});
+
+				
+			
+
+			ContactManager.start();
+		</script>
+	
+	</body>
+
+</html>
